@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+   
+    <ui:define name="body">
+        <h:form id="userTable">
+            <p:dataTable var="user" value="#{userClientBean.users}" >
+                <p:column headerText="#{bundle.ViewUserTitle_id}">
+                    <h:outputText value="#{user.id}" />
+                </p:column>
+                <p:column headerText="#{bundle.UserLabel}">
+                    <h:outputText value="#{user.name}" />
+                </p:column>
+            </p:dataTable>
+            <p:commandButton title="#{bundle.CreateUserTitle}" action="new">
+                <f:setPropertyActionListener value="#{null}" target="#{userBackingBean.userName}" />
+            </p:commandButton>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
