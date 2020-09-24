@@ -7,6 +7,7 @@ package com.telecomunica.portalweb.service;
 
 import com.telecomunica.portalweb.model.Role;
 import com.telecomunica.portalweb.model.UserRole;
+import com.telecomunica.portalweb.model.dto.UserRoleDto;
 import com.telecomunica.portalweb.model.UserRolePK;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
@@ -116,8 +117,8 @@ public class UserRoleFacadeREST extends AbstractFacade<UserRole> {
     @GET
     @Path("allDescription")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List findAllDescription() {
-        Query q = em.createNamedQuery("UserRole.findAllDescription");
+    public List<UserRoleDto> findAllDescription() {
+        Query q = em.createNamedQuery("getAllUserWithRole", UserRoleDto.class);
         return q.getResultList();
     }
 

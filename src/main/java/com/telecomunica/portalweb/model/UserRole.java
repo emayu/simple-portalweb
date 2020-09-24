@@ -5,9 +5,12 @@
  */
 package com.telecomunica.portalweb.model;
 
+import com.telecomunica.portalweb.model.dto.UserRoleDto;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -18,14 +21,21 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "user_role")
+@NamedNativeQueries({
+    @NamedNativeQuery(name = "getAllUserWithRole",
+            query = "select u.id idUser, u.name userName, r.id idRole, r.name roleName "
+                    + " FROM user u "
+                    + " LEFT JOIN user_role ur on u.id = ur.user_id"
+                    + " LEFT JOIN role r on r.id = ur.role_id ",
+            resultClass = UserRoleDto.class)
+})
 @NamedQueries({
     @NamedQuery(name = "UserRole.findAll", query = "SELECT u FROM UserRole u"),
     @NamedQuery(name = "UserRole.findByUserId", query = "SELECT u FROM UserRole u WHERE u.userRolePK.userId = :userId"),
     @NamedQuery(name = "UserRole.findByRoleId", query = "SELECT u FROM UserRole u WHERE u.userRolePK.roleId = :roleId"),
-    @NamedQuery(name = "UserRole.findAllDescription",
-            query = "SELECT u.id, r.id FROM User u LEFT OUTER JOIN UserRole ur ON u.id = ur.userRolePK.userId LEFT OUTER JOIN Role r on r.id = ur.userRolePK.roleId"),
     @NamedQuery(name = "UserRole.findRoleByUserId",
-            query = "SELECT r FROM UserRole ur INNER JOIN Role r on r.id=ur.userRolePK.roleId INNER JOIN User u on u.id=ur.userRolePK.userId where u.id = :userId ")})
+            query = "SELECT r FROM UserRole ur INNER JOIN Role r on r.id=ur.userRolePK.roleId"
+                    + " INNER JOIN User u on u.id=ur.userRolePK.userId where u.id = :userId ")})
 
 public class UserRole implements Serializable {
 

@@ -24,7 +24,7 @@
                             <p:menuitem value="#{bundle.SelectUser}" outcome="/portal/user-selection.xhtml" />
                         </p:submenu>
                         <p:submenu label="#{bundle.Maintenance}">
-                            <p:menuitem value="#{bundle.RoleUserMaintenance}r" outcome="/portal/users/userRoleAssign.xhtml" />
+                            <p:menuitem value="#{bundle.RoleUserMaintenance}" outcome="/portal/users/userRoleAssign.xhtml" />
                             <p:menuitem value="#{bundle.ListUserTittle}" outcome="/portal/users/list.xhtml" />
                         </p:submenu>
                     </p:menubar>
@@ -32,7 +32,12 @@
             </p:layoutUnit>
 
             <p:layoutUnit position="south" size="60">
-                <ui:insert name="footer"/>
+                <ui:insert name="footer">
+                    <div style="text-align:center; margin: auto">
+                        <b>&copy; Todos los derechos reservados 2020</b><br/>
+                        #{bundle.TittleWeb}
+                    </div>
+                </ui:insert>
             </p:layoutUnit>
 
             <p:layoutUnit position="center">
