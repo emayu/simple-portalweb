@@ -1,3 +1,9 @@
 
 nb-configuration.xml
 /target/
+
+portalweb-model/target/
+
+portalweb-service/target/
+
+portalweb-webapp/target/
