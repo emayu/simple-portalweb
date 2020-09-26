@@ -13,9 +13,12 @@ Steps to run this project:
 There are 4 users created Joe, Sam, Tom, Sue and developer. All use 'secret' as password
 
 Role Maping
-Joe 		USER_ROLE, can access
-SAM 		ADMIN_ROLE, can access and admin
-developer 	ADMIN_ROLE, can access and admin
+|      User     |      Role     |  Description        |
+| ------------- | ------------- | ------------------- |
+| Joe           | USER_ROLE     | can access          |
+| Sam           | ADMIN_ROLE    | can access and admin|
+| developer     | ADMIN_ROLE    | can access and admin|
+
 
 All other user cann't access by default
 
