@@ -105,11 +105,15 @@ public class UserClientBean {
     }
     
     public Role getRoleByUserName(String userName){
-        Role[] roles = userRoleTarget
+        Response r = userRoleTarget
                 .path("byUserName/{userName}")
                 .resolveTemplate("userName", userName)
                 .request()
-                .get(Role[].class);
+                .get();
+        if(r.getStatusInfo().toEnum() == Response.Status.FORBIDDEN){
+            return null;
+        }
+        Role[] roles = r.readEntity(Role[].class);
         if(roles != null && roles.length > 0){
             return roles[0];
         }

@@ -10,14 +10,10 @@
         #{bundle.Welcome} #{request.userPrincipal.name}
     </ui:define>
 
-    <ui:define name="footer">
-        footer
-    </ui:define>
-
     <ui:define name="body">
-        <h1>ROL: #{userClientBean.getRoleByUserName(request.userPrincipal.name).name}</h1>
+        <h1>#{bundle.RoleLabel}: #{userClientBean.getRoleByUserName(request.userPrincipal.name).name}</h1>
         <h:form>
-            <p:commandButton value="Logout" action="#{logoutBacking.submit}"/>
+            <p:commandButton value="#{bundle.Logout}" action="#{logoutBacking.submit}" icon="ui-icon-extlink"/>
         </h:form>
     </ui:define>
 

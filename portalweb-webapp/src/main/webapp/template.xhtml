@@ -7,7 +7,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:head>
-        <f:loadBundle basename="Bundle" var="bundle"/>
+        <f:loadBundle basename="Bundle" var="bundle"  />
         <title><ui:insert name="title">#{bundle.TittleWeb}</ui:insert></title>
         <h:outputStylesheet library="css" name="jsfcrud.css"/>
         <h:outputScript library="js" name="jsfcrud.js"/>
@@ -28,8 +28,9 @@
                             <p:menuitem value="#{bundle.ListUserTittle}" outcome="/portal/users/list.xhtml" />
                         </p:submenu>
                         <f:facet name="options">
-                            <p:outputLabel style="padding-right: 5" value="#{userClientBean.getRoleByUserName(request.userPrincipal.name).name}" rendered="#{request.userPrincipal != null}" />
-                            <p:commandButton value="#{bundle.Logout}" action="#{logoutBacking.submit()}" rendered="#{request.userPrincipal != null}" />
+                            <p:outputLabel style="margin:0x 10px 0px 0px;" value="#{userClientBean.getRoleByUserName(request.userPrincipal.name).name}" rendered="#{request.userPrincipal != null}"/>
+                            <p:commandButton value="#{bundle.Logout}" action="#{logoutBacking.submit()}" rendered="#{request.userPrincipal != null}"
+                                             icon="ui-icon-power" />
                         </f:facet>
                     </p:menubar>
                 </h:form>
