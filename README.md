@@ -27,5 +27,5 @@ All other user cann't access by default
 You can interact with the result api with relative endpoint `http://localhost:8080/portalweb-service/rest` this api use
 basich auth (use the credentials username:Joe password:secret, use the same users above).
 
-1. Try to get the list of user `GET http://localhost:8080/portalweb/rest/user`
-2. Try to see the Role asociate to user `GET http://localhost:8080/portalweb/rest/userrole/user/1`
+1. Try to get the list of user `GET http://localhost:8080/portalweb-service/rest/user`
+2. Try to see the Role asociate to user `GET http://localhost:8080/portalweb-service/rest/userrole/user/1`
