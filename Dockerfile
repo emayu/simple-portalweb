@@ -1,2 +1,4 @@
 FROM payara/server-full
-COPY target/*.war $DEPLOY_DIR
+COPY portalweb-service/target/*.war $DEPLOY_DIR
+COPY portalweb-webapp/target/*.war $DEPLOY_DIR
+

@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+
+    <ui:define name="body">
+        <h:form id="assignTable">
+            <p:dataTable var="ur" value="#{userClientBean.userRoleMap}" >
+                <p:column headerText="#{bundle.UserLabel}">
+                    <h:outputText value="#{ur.userName}" />
+                </p:column>
+                <p:column headerText="#{bundle.RoleLabel}">
+                    <h:outputText value="#{ur.roleName}" />
+                </p:column>
+                <p:column style="text-align: center">
+                    <p:commandButton  title="#{bundle.AssignRoleLabel}" action="assignRole" icon="ui-icon-pencil" >
+                        <f:setPropertyActionListener value="#{ur.idUser}" target="#{userBackingBean.id}" />
+                        <f:setPropertyActionListener value="#{ur.idRole}" target="#{userBackingBean.oldRole}" />
+                    </p:commandButton>
+                    <p:commandButton title="#{bundle.UnassignRoleLabel}"
+                                     disabled="#{ur.idRole == null}"
+                                     action="userRoleAssign"
+                                     actionListener="#{userClientBean.deleteRole()}"
+                                     update=":assignTable"
+                                     icon="ui-icon-close">
+                        <f:setPropertyActionListener value="#{ur.idUser}" target="#{userBackingBean.id}" />
+                        <f:setPropertyActionListener value="#{ur.idRole}" target="#{userBackingBean.oldRole}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

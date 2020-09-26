@@ -6,14 +6,23 @@ Steps to run this project:
 1. Clone this Git repository
 2. Build the application with `mvn clean package`
 3. Start you Docker deamon
-4. Build the Docker image with `docker build -t portalweb:1.0 .`
-5. Star the Docker container with `docker run -it -p 8080:8080 portalweb:1.0`
+4. Build the Docker image with `docker build -t portalweb:1.1 .`
+5. Star the Docker container with `docker run -it -p 8080:8080 portalweb:1.1`
 6. Wait until the Payara server launched successfully and visit `http://localhost:8080/portalweb`
+
+There are 4 users created Joe, Sam, Tom, Sue and developer. All use 'secret' as password
+
+Role Maping
+Joe 		USER_ROLE, can access
+SAM 		ADMIN_ROLE, can access and admin
+developer 	ADMIN_ROLE, can access and admin
+
+All other user cann't access by default
 
 
 ## Access to RESTful api
-You can interact with the result api with relative endpoint `http://localhost:8080/portalweb/rest` this api use
-basich auth (use the credentials username:test password:secret).
+You can interact with the result api with relative endpoint `http://localhost:8080/portalweb-service/rest` this api use
+basich auth (use the credentials username:Joe password:secret, use the same users above).
 
 1. Try to get the list of user `GET http://localhost:8080/portalweb/rest/user`
 2. Try to see the Role asociate to user `GET http://localhost:8080/portalweb/rest/userrole/user/1`
