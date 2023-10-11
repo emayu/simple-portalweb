@@ -7,7 +7,7 @@ Steps to run this project:
 2. Build the application with `mvn clean package`
 3. Start you Docker deamon
 4. Build the Docker image with `docker build -t portalweb:1.1 .`
-5. Star the Docker container with `docker run -it -p 8080:8080 portalweb:1.1`
+5. Star the Docker container with `docker run -it -p 8080:8080 --rm portalweb:1.1`
 6. Wait until the Payara server launched successfully and visit `http://localhost:8080/portalweb`
 
 There are 4 users created Joe, Sam, Tom, Sue and developer. All use 'secret' as password
