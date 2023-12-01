@@ -34,6 +34,9 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @PersistenceContext(unitName = "telecomunicasa-auth")
     private EntityManager em;
 
+    @Inject
+    private DatabaseSetup setup;
+
     public UserFacadeREST() {
         super(User.class);
     }
@@ -42,6 +45,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(User entity) {
+        entity.setPassword(setup.generateHash(entity.getPassword()));
         super.create(entity);
     }
 

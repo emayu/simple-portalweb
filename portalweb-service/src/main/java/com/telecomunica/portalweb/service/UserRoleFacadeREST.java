@@ -126,7 +126,7 @@ public class UserRoleFacadeREST extends AbstractFacade<UserRole> {
     @Path("allDescription")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<UserRoleDto> findAllDescription() {
-        Query q = em.createNamedQuery("getAllUserWithRole", UserRoleDto.class);
+        Query q = em.createNamedQuery("UserRole.getAllUserWithRole", UserRoleDto.class);
         return q.getResultList();
     }
 

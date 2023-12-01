@@ -20,13 +20,13 @@ import javax.persistence.Table;
  * @author f32
  */
 @Entity
-@Table(name = "user_role")
+@Table(name = "USER_ROLE")
 @NamedNativeQueries({
-    @NamedNativeQuery(name = "getAllUserWithRole",
+    @NamedNativeQuery(name = "UserRole.getAllUserWithRole",
             query = "select u.id idUser, u.name userName, r.id idRole, r.name roleName "
-                    + " FROM user u "
-                    + " LEFT JOIN user_role ur on u.id = ur.user_id"
-                    + " LEFT JOIN role r on r.id = ur.role_id ",
+                    + " FROM USER u "
+                    + " LEFT JOIN USER_ROLE ur on u.id = ur.user_id"
+                    + " LEFT JOIN ROLE r on r.id = ur.role_id ",
             resultClass = UserRoleDto.class)
 })
 @NamedQueries({

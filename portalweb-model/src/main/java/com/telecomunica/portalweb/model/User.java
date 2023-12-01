@@ -23,9 +23,9 @@ import javax.validation.constraints.Size;
  * @author f32
  */
 @Entity
-@Table(name = "user")
+@Table(name = "\"USER\"")
 @NamedQueries({
-    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
+    @NamedQuery(name = "User.findAll", query = "SELECT u.id, u.name FROM User u"),
     @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id"),
     @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name")})
 public class User implements Serializable {
@@ -39,6 +39,8 @@ public class User implements Serializable {
     @Size(max = 45)
     @Column(name = "name")
     private String name;
+    @Column(name = "password")
+    private String password;
 
     public User() {
     }
@@ -62,6 +64,16 @@ public class User implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    
 
     @Override
     public int hashCode() {

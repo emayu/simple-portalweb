@@ -22,7 +22,7 @@ import javax.validation.constraints.Size;
  * @author f32
  */
 @Entity
-@Table(name = "role")
+@Table(name = "ROLE")
 @NamedQueries({
     @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r"),
     @NamedQuery(name = "Role.findById", query = "SELECT r FROM Role r WHERE r.id = :id"),

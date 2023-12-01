@@ -34,6 +34,11 @@ public abstract class AbstractFacade<T> {
         getEntityManager().remove(getEntityManager().merge(entity));
     }
 
+    /**
+     *
+     * @param id
+     * @return the found entity instance or null if the entity does not exist
+     */
     public T find(Object id) {
         return getEntityManager().find(entityClass, id);
     }
