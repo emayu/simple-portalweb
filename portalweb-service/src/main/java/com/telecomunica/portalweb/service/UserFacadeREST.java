@@ -6,9 +6,11 @@
 package com.telecomunica.portalweb.service;
 
 import com.telecomunica.portalweb.model.User;
+import com.telecomunica.portalweb.rest.DatabaseSetup;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
