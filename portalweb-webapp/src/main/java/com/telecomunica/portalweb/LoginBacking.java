@@ -16,13 +16,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 @Named
 @RequestScoped
 public class LoginBacking {
 
     @NotEmpty
-    @Size(min = 6, message = "Password must have at least 8 characters")
     private String password;
 
     @NotEmpty
@@ -39,9 +39,13 @@ public class LoginBacking {
     
     @Inject
     UserSessionBean session;
+    
+    
+    private static final Logger LOG = Logger.getLogger(LoginBacking.class.getName());
+    
 
     public void submit() throws IOException {
-
+        LOG.info("starting login");
         switch (continueAuthentication()) {
             case SEND_CONTINUE:
                 facesContext.responseComplete();
@@ -68,7 +72,7 @@ public class LoginBacking {
                 (HttpServletResponse) externalContext.getResponse(),
                 AuthenticationParameters.withParams().credential(new UsernamePasswordCredential(email, password))
         );
-        System.out.println("status: " + status);
+        LOG.info(()-> "status: " + status);
         return status;
     }
 

@@ -5,6 +5,7 @@
  */
 package com.telecomunica.portalweb.client;
 
+import com.telecomunica.portalweb.WebPagesConfig;
 import com.telecomunica.portalweb.model.Role;
 import java.util.Enumeration;
 import javax.annotation.PostConstruct;
@@ -38,7 +39,7 @@ public class RoleClientBean {
         client = ClientBuilder.newClient();
         HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic(session.getUser(), session.getPassword());
         client.register(feature);
-        target = client.target("http://localhost:8080/portalweb-service/rest/role/");
+        target = client.target(WebPagesConfig.getGlobalBaseURLClientTarget() + "/role/");
         
     }
     
