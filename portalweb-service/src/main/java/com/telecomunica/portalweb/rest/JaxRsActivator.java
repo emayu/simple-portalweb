@@ -12,7 +12,7 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 @ApplicationScoped
-@ApplicationPath("/rest")
+@ApplicationPath("/rest/v1")
 @DeclareRoles({ "USER_ROLE", "USER_ADMIN" })
 public class JaxRsActivator extends Application {
 

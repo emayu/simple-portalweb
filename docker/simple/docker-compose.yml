@@ -4,7 +4,6 @@ services:
     image: portalweb:1.1
     ports:
       - "8080:8080"
-      - "4848:4848"
     networks:
       - portaweb-mysql
     depends_on:

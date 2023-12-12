@@ -1,9 +1,11 @@
 package com.telecomunica.portalweb;
 
 import com.telecomunica.portalweb.model.Role;
+import com.telecomunica.portalweb.util.JsfUtil;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.faces.annotation.FacesConfig;
@@ -49,6 +51,7 @@ import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 public class WebPagesConfig implements IdentityStore {
 
     private static final Logger LOG = Logger.getLogger(WebPagesConfig.class.getName());
+    private final ResourceBundle bundle = ResourceBundle.getBundle("Bundle");
 
     public String[] getDyna() {
         return new String[]{"Pbkdf2PasswordHash.Algorithm=PBKDF2WithHmacSHA512", "Pbkdf2PasswordHash.SaltSizeBytes=64"};
@@ -56,7 +59,6 @@ public class WebPagesConfig implements IdentityStore {
 
     public CredentialValidationResult validate(UsernamePasswordCredential credential) {
         Client client = ClientBuilder.newClient();
-        LOG.info(()->"Validating: "+credential.getCaller() + " "+ credential.getPasswordAsString());
         HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic(credential.getCaller(), credential.getPasswordAsString());
         client.register(feature);
         WebTarget target = client.target(getGlobalBaseURLClientTarget() + "/userrole/");
@@ -77,6 +79,12 @@ public class WebPagesConfig implements IdentityStore {
                 return c;
             }
         }
+        if(response.getStatusInfo().toEnum() == Response.Status.UNAUTHORIZED){
+            
+            JsfUtil.addErrorMessage(bundle.getString("Login.checkYourCredentials"));
+        }else if( response.getStatusInfo().toEnum() == Response.Status.FORBIDDEN){
+            JsfUtil.addErrorMessage(bundle.getString("Login.Forbidden"));
+        }
         LOG.info(() -> "StatusInfo:" + response.getStatusInfo() + " mediaType:" + response.getMediaType());
         return CredentialValidationResult.INVALID_RESULT;
         
@@ -88,7 +96,7 @@ public class WebPagesConfig implements IdentityStore {
     
     public static String getGlobalBaseURLClientTarget(){
         final String URL_BASE = System.getenv("URL_BASE");
-        return URL_BASE != null && !URL_BASE.isBlank()? URL_BASE : "http://localhost:8080/portalweb-service/rest";
+        return URL_BASE != null && !URL_BASE.isBlank()? URL_BASE : "http://localhost:8080/portalweb-service/rest/v1";
     }
 
 }

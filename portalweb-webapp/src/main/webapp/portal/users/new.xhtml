@@ -8,13 +8,17 @@
 
     <ui:define name="title">#{bundle.CreateUserTitle}</ui:define>
     <ui:define name="body">
-        <h:form id="userForm" rendered="#{request.isUserInRole('ROLE_ADMIN')}">
+        <h:form id="userForm" rendered="#{request.isUserInRole('USER_ADMIN')}">
             <h2>#{bundle.CreateUserTitle}</h2>
             <p:panelGrid columns="2" >
                 <p:outputLabel for="id" value="#{bundle.CreateUserTitle_id}"/>
                 <p:inputText id="id" value="#{userBackingBean.id}" required="true" requiredMessage="#{bundle.CreateUserRequiredMessage_id}"/>
                 <p:outputLabel for="name" value="#{bundle.UserNameLabel}"/>
                 <p:inputText id="name" value="#{userBackingBean.userName}" required="true" requiredMessage="#{bundle.CreateUserRequiredMessage_name}"/>
+                <p:outputLabel for="password" value="#{bundle.PasswordLabel}"/>
+                <p:password id ="password" match="repeat-password" value="#{userBackingBean.password}" required="true" requiredMessage="#{bundle['users.new.passwordRequiredMessage']}" validatorMessage="#{bundle['users.new.passwordDoNotMatch']}" feedback="true"/>
+                <p:outputLabel for="repeat-password" value="#{bundle['users.new.repeatPasswordLabel']}"/>
+                <p:password id ="repeat-password" placeholder="#{bundle['users.new.repeatPasswordPlaceHolder']}" requiredMessage="#{bundle['users.new.repeatPasswordRequiredMessage']}" required="true" />
             </p:panelGrid>
             <p:commandButton value="#{bundle.Save}" action="list" actionListener="#{userClientBean.createUser()}" update="userForm,growl" />
             <p:commandButton value="#{bundle.Cancel}" action="list" immediate="true"/>

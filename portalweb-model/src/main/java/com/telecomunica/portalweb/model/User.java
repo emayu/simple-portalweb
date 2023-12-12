@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -39,6 +40,8 @@ public class User implements Serializable {
     @Size(max = 45)
     @Column(name = "name")
     private String name;
+    @NotNull
+    @NotEmpty
     @Column(name = "password")
     private String password;
 

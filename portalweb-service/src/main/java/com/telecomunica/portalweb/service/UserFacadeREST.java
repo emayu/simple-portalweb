@@ -8,6 +8,7 @@ package com.telecomunica.portalweb.service;
 import com.telecomunica.portalweb.model.User;
 import com.telecomunica.portalweb.rest.DatabaseSetup;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -23,6 +24,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -35,20 +37,30 @@ public class UserFacadeREST extends AbstractFacade<User> {
 
     @PersistenceContext(unitName = "telecomunicasa-auth")
     private EntityManager em;
-
+    
     @Inject
     private DatabaseSetup setup;
 
     public UserFacadeREST() {
         super(User.class);
     }
-
+    
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(User entity) {
+    public Response createUser(User entity) {
+        if(entity.getPassword() == null || entity.getPassword().isBlank()){
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity("The field password is not set")
+                    .build();
+        }
         entity.setPassword(setup.generateHash(entity.getPassword()));
         super.create(entity);
+        getEntityManager().flush();
+        return Response
+                .status(Response.Status.CREATED)
+                .entity(entity)
+                .build();
     }
 
     @PUT
@@ -60,30 +72,43 @@ public class UserFacadeREST extends AbstractFacade<User> {
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
+    public Response remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
+        return Response.noContent().build();
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public User find(@PathParam("id") Integer id) {
-        return super.find(id);
+    public Response find(@PathParam("id") Integer id) {
+        User u = super.find(id);
+        if( u == null){
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .entity(null)
+                    .build();
+        }
+        return Response.ok(u).build();
     }
     
     @GET
     @Path("byName/{name}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public User findByUserName(@PathParam("name") String name) {
+    public List<User> findByUserName(@PathParam("name") String name) {
         Query q = em.createNamedQuery("User.findByName").setParameter("name", name);
-        return (User) q.getSingleResult();
+        return  q.getResultList();
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<User> findAll() {
-        return super.findAll();
+        List<User> userListInfo =  super.findAll();
+        return userListInfo.stream().map(user -> {
+            getEntityManager().detach(user);
+            user.setPassword(null);
+            return user;
+                }).collect(Collectors.toList());
     }
 
     @GET

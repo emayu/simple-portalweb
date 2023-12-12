@@ -25,6 +25,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.PathSegment;
+import java.util.Set;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -64,10 +68,14 @@ public class UserRoleFacadeREST extends AbstractFacade<UserRole> {
     }
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(UserRole entity) {
+    public Response createUserRole(UserRole entity) {
         super.create(entity);
+        return Response
+                .status(Response.Status.CREATED)
+                .entity(entity)
+                .build();
+        
     }
 
     @PUT
@@ -129,6 +137,27 @@ public class UserRoleFacadeREST extends AbstractFacade<UserRole> {
         Query q = em.createNamedQuery("UserRole.getAllUserWithRole", UserRoleDto.class);
         return q.getResultList();
     }
+    
+    /** TESTING FOR FUTURE
+    private static final Set<String> VALID_COLUMNS_FOR_ORDER_BY  = 
+            Set.of("idUser","userName","idRole", "roleName");
+    
+    @GET
+    @Path("allDescription")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<UserRoleDto> findAllDescription(@DefaultValue("idUser") @QueryParam("orderby") String orderBy) {
+        StringBuilder query = new StringBuilder("select u.id idUser, u.name userName, r.id idRole, r.name roleName "
+                    + " FROM USER u "
+                    + " LEFT JOIN USER_ROLE ur on u.id = ur.user_id"
+                    + " LEFT JOIN ROLE r on r.id = ur.role_id");
+        
+        if(VALID_COLUMNS_FOR_ORDER_BY.contains(orderBy)){
+            query.append(" ORDER BY ").append(orderBy);
+        }
+        Query q = em.createNativeQuery(query.toString(), UserRoleDto.class);
+        q.setParameter("orderInfo", orderBy);
+        return q.getResultList();
+    } **/
 
     @GET
     @Path("count")

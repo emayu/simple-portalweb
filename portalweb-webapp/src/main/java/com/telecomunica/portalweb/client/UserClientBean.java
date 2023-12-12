@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -12,6 +13,7 @@ import com.telecomunica.portalweb.model.UserRole;
 import com.telecomunica.portalweb.model.dto.UserRoleDto;
 import com.telecomunica.portalweb.util.JsfUtil;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -185,11 +187,13 @@ public class UserClientBean {
     public void createUser(){
         User u = new User(bean.getId());
         u.setName(bean.getUserName());
+        u.setPassword(bean.getPassword());
         Response r = userTarget
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(u, MediaType.APPLICATION_JSON));
         if(r.getStatusInfo().getFamily() != Response.Status.Family.SUCCESSFUL){
-            JsfUtil.addErrorMessage(bundle.getString("ErrorOnCreateRecord") + r.getStatusInfo().getReasonPhrase());
+            JsfUtil.addErrorMessage(bundle.getString("ErrorOnCreateRecord"));
+            LOG.log(Level.SEVERE, "Error code: " + r.getStatusInfo().getReasonPhrase() + ", response: "+ r.readEntity(String.class));
         }else{
             JsfUtil.addSuccessMessage(bundle.getString("UserCreated"));
         }

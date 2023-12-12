@@ -21,6 +21,7 @@ public class UserBackingBean implements Serializable{
     private Integer oldRole;
     private int newRole;
     private String userName;
+    private String password;
 
     public int getId() {
         return id;
@@ -53,5 +54,13 @@ public class UserBackingBean implements Serializable{
     public void setUserName(String userName) {
         this.userName = userName;
     }
-    
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+       
 }
