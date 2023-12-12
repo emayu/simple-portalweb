@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -23,9 +24,9 @@ import javax.validation.constraints.Size;
  * @author f32
  */
 @Entity
-@Table(name = "user")
+@Table(name = "\"USER\"")
 @NamedQueries({
-    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
+    @NamedQuery(name = "User.findAll", query = "SELECT u.id, u.name FROM User u"),
     @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id"),
     @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name")})
 public class User implements Serializable {
@@ -39,6 +40,10 @@ public class User implements Serializable {
     @Size(max = 45)
     @Column(name = "name")
     private String name;
+    @NotNull
+    @NotEmpty
+    @Column(name = "password")
+    private String password;
 
     public User() {
     }
@@ -63,6 +68,16 @@ public class User implements Serializable {
         this.name = name;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -72,7 +87,12 @@ public class User implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (this == object) {
+            return true;
+        }
+        if (object == null) {
+            return false;
+        }
         if (!(object instanceof User)) {
             return false;
         }

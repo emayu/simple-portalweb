@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE resources PUBLIC "-//Payara.fish//DTD Payara Server 4 Resource Definitions//EN" "https://raw.githubusercontent.com/payara/Payara-Server-Documentation/master/schemas/payara-resources_1_6.dtd">
+<resources>
+    <jdbc-resource enabled="true" 
+                   pool-name="MySQLPool" 
+                   jndi-name="java:app/DefaultDataSource"/>
+    <jdbc-connection-pool name="MySQLPool" 
+                          res-type="javax.sql.DataSource" 
+                          datasource-classname="com.mysql.cj.jdbc.MysqlDataSource">
+      <property name="URL" value="jdbc:mysql://mysql-portal-db:3306/telecomunica?zeroDateTimeBehavior=CONVERT_TO_NULL&amp;useSSL=false&amp;allowPublicKeyRetrieval=true"/>
+      <property name="User" value="root"></property>
+      <property name="Password" value="mysql"></property>
+    </jdbc-connection-pool>
+</resources>

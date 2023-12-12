@@ -6,7 +6,9 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-   
+   <ui:define name="title">
+        User List
+    </ui:define>
     <ui:define name="body">
         <h:form id="userTable" rendered="#{request.isUserInRole('USER_ADMIN')}">
             <p:dataTable var="user" value="#{userClientBean.users}" >
@@ -17,7 +19,7 @@
                     <h:outputText value="#{user.name}" />
                 </p:column>
             </p:dataTable>
-            <p:commandButton title="#{bundle.CreateUserTitle}" action="new" rendered="false">
+            <p:commandButton title="#{bundle.CreateUserTitle}" action="new" >
                 <f:setPropertyActionListener value="#{null}" target="#{userBackingBean.userName}" />
             </p:commandButton>
         </h:form>

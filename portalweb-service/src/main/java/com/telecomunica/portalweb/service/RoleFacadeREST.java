@@ -20,6 +20,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -38,10 +39,13 @@ public class RoleFacadeREST extends AbstractFacade<Role> {
     }
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Role entity) {
+    public Response createRole(Role entity) {
         super.create(entity);
+        return Response
+                .status(Response.Status.CREATED)
+                .entity(entity)
+                .build();
     }
 
     @PUT
@@ -53,15 +57,23 @@ public class RoleFacadeREST extends AbstractFacade<Role> {
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
+    public Response remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
+        return Response.noContent().build();
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Role find(@PathParam("id") Integer id) {
-        return super.find(id);
+    public Response find(@PathParam("id") Integer id) {
+        Role role = super.find(id);
+        if(role == null){
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .entity(null)
+                    .build();
+        }
+        return Response.ok(role).build();
     }
 
     @GET

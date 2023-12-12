@@ -6,6 +6,7 @@
 package com.telecomunica.portalweb.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +22,7 @@ import javax.validation.constraints.Size;
  * @author f32
  */
 @Entity
-@Table(name = "role")
+@Table(name = "ROLE")
 @NamedQueries({
     @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r"),
     @NamedQuery(name = "Role.findById", query = "SELECT r FROM Role r WHERE r.id = :id"),
@@ -70,7 +71,12 @@ public class Role implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (this == object) {
+            return true;
+        }
+        if (object == null) {
+            return false;
+        }
         if (!(object instanceof Role)) {
             return false;
         }

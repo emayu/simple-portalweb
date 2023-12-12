@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,12 +6,15 @@
  */
 package com.telecomunica.portalweb.client;
 
+import com.telecomunica.portalweb.WebPagesConfig;
 import com.telecomunica.portalweb.model.Role;
 import com.telecomunica.portalweb.model.User;
 import com.telecomunica.portalweb.model.UserRole;
 import com.telecomunica.portalweb.model.dto.UserRoleDto;
 import com.telecomunica.portalweb.util.JsfUtil;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.RequestScoped;
@@ -35,10 +39,12 @@ import javax.ws.rs.core.Response;
 @Named
 @RequestScoped
 public class UserClientBean {
+
+    private static final Logger LOG = Logger.getLogger(UserClientBean.class.getName());
     
     private Client client;
-    private  WebTarget target;
-    private  WebTarget userRoleTarget;
+    private  WebTarget userTarget;
+    private  WebTarget userXRoleTarget;
     private ResourceBundle bundle;
     
     @Inject 
@@ -55,8 +61,8 @@ public class UserClientBean {
         client = ClientBuilder.newClient();
         HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic(session.getUser(), session.getPassword());
         client.register(feature);
-        target = client.target("http://localhost:8080/portalweb-service/rest/user/");
-        userRoleTarget = client.target("http://localhost:8080/portalweb-service/rest/userrole/");
+        userTarget = client.target(WebPagesConfig.getGlobalBaseURLClientTarget() + "/user/");
+        userXRoleTarget = client.target(WebPagesConfig.getGlobalBaseURLClientTarget() + "/userrole/");
         bundle = ResourceBundle.getBundle("Bundle");
         
     }
@@ -67,11 +73,11 @@ public class UserClientBean {
     }
     
     public User[] getUsers() {
-        return target.request().get(User[].class);
+        return userTarget.request().get(User[].class);
     }
     
     public User getUserInfo(){
-        User u = target
+        User u = userTarget
                 .path("{userId}")
                 .resolveTemplate("userId", bean.getId())
                 .request()
@@ -81,11 +87,13 @@ public class UserClientBean {
     }
     
     public UserRoleDto[] getUserRoleMap(){
-       UserRoleDto[] ur = userRoleTarget
+        Response r = userXRoleTarget
                .path("allDescription")
-               .request()
-               .get(UserRoleDto[].class);
-       return ur;
+               .request().get();
+        if( r.getStatusInfo().toEnum() == Response.Status.OK){
+           return r.readEntity(UserRoleDto[].class);
+       }
+       return null;
     }
     
     public Role getRol(){
@@ -105,17 +113,16 @@ public class UserClientBean {
     }
     
     public Role getRoleByUserName(String userName){
-        Response r = userRoleTarget
+        Response r = userXRoleTarget
                 .path("byUserName/{userName}")
                 .resolveTemplate("userName", userName)
                 .request()
                 .get();
-        if(r.getStatusInfo().toEnum() == Response.Status.FORBIDDEN){
-            return null;
-        }
-        Role[] roles = r.readEntity(Role[].class);
-        if(roles != null && roles.length > 0){
-            return roles[0];
+        if (r.getStatusInfo().toEnum() == Response.Status.OK) {
+            Role[] roles = r.readEntity(Role[].class);
+            if (roles != null && roles.length > 0) {
+                return roles[0];
+            }
         }
         return null;
     }
@@ -133,7 +140,7 @@ public class UserClientBean {
     }
     
     private Role[] getRolesByUser(int userRole){
-        Role[] roles = userRoleTarget
+        Role[] roles = userXRoleTarget
                 .path("byUserId/{userId}")
                 .resolveTemplate("userId", userRole)
                 .request()
@@ -146,13 +153,18 @@ public class UserClientBean {
     }
     
     public void deleteRole(){
+        
         if(bean.getOldRole() != null){   
-            userRoleTarget
-                .path("foo")
+            
+            WebTarget target = userXRoleTarget
+                .path("foo");
+            LOG.info("target " + target.getUri().toString());
+            var request = target
                 .matrixParam("userId", bean.getId())
                 .matrixParam("roleId", bean.getOldRole())
-                .request()
-                .delete();
+                .request();
+            var response = request.delete();
+            LOG.info("response status " + response.getStatusInfo().toString());
         }
     }
     
@@ -161,7 +173,7 @@ public class UserClientBean {
         deleteRole();
         //insert new register
         UserRole ur = new UserRole(bean.getId(), bean.getNewRole());
-        Response r = userRoleTarget
+        Response r = userXRoleTarget
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(ur, MediaType.APPLICATION_JSON));
         if(r.getStatusInfo().getFamily() != Response.Status.Family.SUCCESSFUL){
@@ -175,11 +187,13 @@ public class UserClientBean {
     public void createUser(){
         User u = new User(bean.getId());
         u.setName(bean.getUserName());
-        Response r = target
+        u.setPassword(bean.getPassword());
+        Response r = userTarget
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(u, MediaType.APPLICATION_JSON));
         if(r.getStatusInfo().getFamily() != Response.Status.Family.SUCCESSFUL){
-            JsfUtil.addErrorMessage(bundle.getString("ErrorOnCreateRecord") + r.getStatusInfo().getReasonPhrase());
+            JsfUtil.addErrorMessage(bundle.getString("ErrorOnCreateRecord"));
+            LOG.log(Level.SEVERE, "Error code: " + r.getStatusInfo().getReasonPhrase() + ", response: "+ r.readEntity(String.class));
         }else{
             JsfUtil.addSuccessMessage(bundle.getString("UserCreated"));
         }

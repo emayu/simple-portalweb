@@ -2,12 +2,15 @@
 <persistence version="2.2" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
   <!-- Define Persistence Unit -->
   <persistence-unit name="telecomunicasa-auth" transaction-type="JTA">
-    <jta-data-source>java:comp/DefaultDataSource</jta-data-source>
+    <jta-data-source>java:app/DefaultDataSource</jta-data-source>
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>com.telecomunica.portalweb.model.User</class>
     <class>com.telecomunica.portalweb.model.Role</class>
     <class>com.telecomunica.portalweb.model.UserRole</class>
+    <class>com.telecomunica.portalweb.model.dto.UserRoleDto</class>
     <properties>
-      <property name="eclipselink.logging.exceptions" value="false"/>
+      <property name="eclipselink.logging.exceptions" value="true"/>
+      <property name="eclipselink.logging.level" value="INFO"/>
     </properties>
   </persistence-unit>
   <properties/>

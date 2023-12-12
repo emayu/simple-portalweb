@@ -6,11 +6,14 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-
+    
 
     <ui:define name="body">
         <h:form id="assignTable">
             <p:dataTable var="ur" value="#{userClientBean.userRoleMap}" >
+                <p:column headerText="#{bundle.ViewUserTitle_id}">
+                    <h:outputText value="#{ur.idUser}" />
+                </p:column>
                 <p:column headerText="#{bundle.UserLabel}">
                     <h:outputText value="#{ur.userName}" />
                 </p:column>

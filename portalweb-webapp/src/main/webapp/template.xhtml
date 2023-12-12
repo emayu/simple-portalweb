@@ -28,7 +28,7 @@
                             <p:menuitem value="#{bundle.ListUserTittle}" outcome="/portal/users/list.xhtml" />
                         </p:submenu>
                         <f:facet name="options">
-                            <p:outputLabel style="margin:0x 10px 0px 0px;" value="#{userClientBean.getRoleByUserName(request.userPrincipal.name).name}" rendered="#{request.userPrincipal != null}"/>
+                            <p:outputLabel style="margin:0x 10px 0px 0px;" value="#{request.userPrincipal.name}: #{userClientBean.getRoleByUserName(request.userPrincipal.name).name}" rendered="#{request.userPrincipal != null}"/>
                             <p:commandButton value="#{bundle.Logout}" action="#{logoutBacking.submit()}" rendered="#{request.userPrincipal != null}"
                                              icon="ui-icon-power" />
                         </f:facet>

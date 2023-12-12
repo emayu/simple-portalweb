@@ -18,8 +18,9 @@ import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
 
 // Database Definition for built-in DatabaseIdentityStore
 @DatabaseIdentityStoreDefinition(
-    callerQuery = "#{'select password from user where name = ?'}",
-    groupsQuery = "select r.name from user_role ur inner join user u on u.id = ur.user_id inner join role r on r.id = ur.role_id where u.name = ?",
+    dataSourceLookup = "java:app/DefaultDataSource",
+    callerQuery = "#{'select password from USER where name = ?'}",
+    groupsQuery = "select r.name from USER_ROLE ur inner join USER u on u.id = ur.user_id inner join ROLE r on r.id = ur.role_id where u.name = ?",
     hashAlgorithm = Pbkdf2PasswordHash.class,
     priorityExpression = "#{100}",
     hashAlgorithmParameters = {
